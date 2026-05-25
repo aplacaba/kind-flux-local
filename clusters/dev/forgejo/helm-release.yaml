@@ -50,6 +50,13 @@ spec:
       claimName: gitea-shared-storage
       size: 1Gi
 
+    # ── Pod security context ──────────────────
+    # Rootless image needs fsGroup so hostPath volumes are writable
+    podSecurityContext:
+      fsGroup: 1000
+      runAsUser: 1000
+      runAsGroup: 1000
+
     # ── Disable ingress ──────────────────────
     ingress:
       enabled: false
