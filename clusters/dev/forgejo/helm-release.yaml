@@ -47,6 +47,8 @@ spec:
       enabled: true
       create: true
       storageClass: ""
+      claimName: gitea-shared-storage
+      size: 1Gi
 
     # ── Disable ingress ──────────────────────
     ingress:
