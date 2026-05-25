@@ -1,0 +1,17 @@
+apiVersion: flux-operator.controlplane.io/v1
+kind: FluxInstance
+metadata:
+  name: flux
+  namespace: flux-system
+spec:
+  components:
+    - source-controller
+    - kustomize-controller
+    - helm-controller
+    - notification-controller
+  sync:
+    url: https://github.com/<YOUR-ORG>/<YOUR-REPO>.git
+    branch: main
+    path: clusters/dev
+    interval: 1m
+---
