@@ -36,21 +36,20 @@ echo "→ Installing Flux Operator on each cluster..."
 for cluster in dev prod; do
   ctx="kind-${cluster}"
   echo "--- [${cluster}] ---"
-  kubectl --context "$ctx" apply --server-side -f https://github.com/controlplaneio-fluxcd/flux-operator/releases/latest/download/install.yaml
-  echo "✓ Flux Operator manifests applied on '${cluster}'"
+  helm upgrade --install flux-operator oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator \
+    --kube-context "$ctx" \
+    --namespace flux-system \
+    --create-namespace \
+    --wait \
+    --timeout 5m
+  echo "✓ Flux Operator installed on '${cluster}'"
 done
 
 echo ""
-echo "→ Waiting for Flux Operator pods to be ready..."
+echo "→ Flux Operator status per cluster..."
 for cluster in dev prod; do
   ctx="kind-${cluster}"
   echo "--- [${cluster}] ---"
-  kubectl wait --context "$ctx" \
-    --namespace flux-system \
-    --for=condition=Available \
-    --timeout=120s \
-    deployment/flux-operator 2>/dev/null \
-    || true
   kubectl get pods --context "$ctx" \
     --namespace flux-system \
     -o custom-columns=NAME:.metadata.name,STATUS:.status.phase 2>/dev/null || true

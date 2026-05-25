@@ -1,7 +1,7 @@
 # Flux GitOps — Multi-Cluster with Flux Operator
 
 Manage two local Kubernetes clusters (`dev`, `prod`) using the **Flux Operator** from
-[controlplaneio-flux](https://github.com/controlplaneio-flux/flux-operator). The operator
+[controlplaneio-fluxcd](https://github.com/controlplaneio-fluxcd/flux-operator). The operator
 bootstraps Flux CD on each cluster — no manual `flux bootstrap` commands needed.
 
 ## Architecture
@@ -32,12 +32,13 @@ bootstraps Flux CD on each cluster — no manual `flux bootstrap` commands neede
 
 ## Prerequisites
 
-| Tool    | Version | Install                                   |
-| ------- | ------- | ----------------------------------------- |
-| kind    | ≥0.23   | `brew install kind` / `choco install kind` |
-| kubectl | ≥1.28   | `brew install kubectl` / `choco install kubernetes-cli` |
-| kustomize | ≥5    | `brew install kustomize`                  |
-| Docker  | (any)   | Docker Desktop or Rancher Desktop          |
+| Tool      | Version | Install                                     |
+| --------- | ------- | ------------------------------------------- |
+| kind      | ≥0.23   | `brew install kind` / `choco install kind`   |
+| kubectl   | ≥1.28   | `brew install kubectl` / `choco install kubernetes-cli` |
+| helm      | ≥3.14   | `brew install helm` / `choco install kubernetes-helm` |
+| kustomize | ≥5      | `brew install kustomize`                    |
+| Docker    | (any)   | Docker Desktop or Rancher Desktop            |
 
 ## Quickstart
 
