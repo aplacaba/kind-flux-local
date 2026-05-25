@@ -14,7 +14,7 @@ spec:
     # ── Admin user ───────────────────────────
     gitea:
       admin:
-        username: forgejo-admin
+        username: forgejo_admin
         password: admin123
         email: admin@forgejo.local
 
@@ -51,6 +51,7 @@ spec:
     # ── Disable ingress ──────────────────────
     ingress:
       enabled: false
+      tls: []
 
     # ── Resource limits for local dev ────────
     resources:
