@@ -1,17 +1,26 @@
-apiVersion: flux-operator.controlplane.io/v1
+apiVersion: fluxcd.controlplane.io/v1
 kind: FluxInstance
 metadata:
   name: flux
   namespace: flux-system
 spec:
-  components:
-    - source-controller
-    - kustomize-controller
-    - helm-controller
-    - notification-controller
+  distribution:
+    version: "2.x"
+    registry: "ghcr.io/fluxcd"
+    artifact: "oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests"
+    components:
+      - source-controller
+      - kustomize-controller
+      - helm-controller
+      - notification-controller
+  cluster:
+    type: kubernetes
+    size: small
+    networkPolicy: true
+    multitenant: false
   sync:
-    url: https://github.com/aplacaba/kind-flux-local.git
-    branch: main
-    path: clusters/prod
-    interval: 1m
----
+    kind: GitRepository
+    url: "https://github.com/aplacaba/kind-flux-local.git"
+    ref: "refs/heads/main"
+    path: "clusters/prod"
+    interval: "1m"

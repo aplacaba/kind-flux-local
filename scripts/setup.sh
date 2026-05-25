@@ -36,7 +36,7 @@ echo "→ Installing Flux Operator on each cluster..."
 for cluster in dev prod; do
   ctx="kind-${cluster}"
   echo "--- [${cluster}] ---"
-  kubectl --context "$ctx" apply --server-side -f https://raw.githubusercontent.com/controlplaneio-flux/flux-operator/main/releases/flux-operator.yaml
+  kubectl --context "$ctx" apply --server-side -f https://github.com/controlplaneio-fluxcd/flux-operator/releases/latest/download/install.yaml
   echo "✓ Flux Operator manifests applied on '${cluster}'"
 done
 
@@ -46,13 +46,13 @@ for cluster in dev prod; do
   ctx="kind-${cluster}"
   echo "--- [${cluster}] ---"
   kubectl wait --context "$ctx" \
-    --namespace flux-operator \
+    --namespace flux-system \
     --for=condition=Available \
     --timeout=120s \
     deployment/flux-operator 2>/dev/null \
     || true
   kubectl get pods --context "$ctx" \
-    --namespace flux-operator \
+    --namespace flux-system \
     -o custom-columns=NAME:.metadata.name,STATUS:.status.phase 2>/dev/null || true
 done
 
@@ -62,7 +62,7 @@ for cluster in dev prod; do
   ctx="kind-${cluster}"
   echo "--- [${cluster}] ---"
   for i in $(seq 1 30); do
-    if kubectl --context "$ctx" get crd fluxinstances.flux-operator.controlplane.io &>/dev/null 2>&1; then
+    if kubectl --context "$ctx" get crd fluxinstances.fluxcd.controlplane.io &>/dev/null 2>&1; then
       echo "  ✓ FluxInstance CRD ready"
       break
     fi
