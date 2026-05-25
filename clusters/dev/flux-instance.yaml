@@ -10,7 +10,7 @@ spec:
     - helm-controller
     - notification-controller
   sync:
-    url: https://github.com/<YOUR-ORG>/<YOUR-REPO>.git
+    url: https://github.com/aplacaba/kind-flux-local.git
     branch: main
     path: clusters/dev
     interval: 1m
