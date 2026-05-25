@@ -8,7 +8,7 @@ nodes:
         hostPort: 30180
         listenAddress: "127.0.0.1"
       - containerPort: 30443
-        hostPort: 30443
+        hostPort: 30444
         listenAddress: "127.0.0.1"
   - role: worker
 ---
