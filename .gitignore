@@ -1,0 +1,13 @@
+# temp / cache
+*.swp
+*.bak
+.DS_Store
+.idea/
+.vscode/
+*.local
+
+# kind kubeconfigs
+.kubeconfig-*
+
+# scripts log
+*.log
