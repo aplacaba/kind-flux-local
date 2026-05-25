@@ -99,6 +99,39 @@ After updating, the Flux instance will re-sync automatically. Changes made direc
 your git repo under `clusters/dev/` or `clusters/prod/` will be applied to the respective
 cluster by Flux — that's GitOps.
 
+## Forgejo on dev
+
+The dev cluster includes a [Forgejo](https://forgejo.org/) instance (Git hosting + CI/CD via
+Forgejo Actions) and a persistent Actions runner.
+
+### Access
+
+After bootstrapping, Forgejo is available at:
+
+```
+http://127.0.0.1:30090
+```
+
+Credentials: `forgejo-admin` / `admin123`
+
+### Register the runner
+
+The runner HelmRelease references a Kubernetes secret for the registration token. After first
+login to Forgejo, create a runner token in the UI, then create the secret:
+
+```bash
+kubectl --context kind-dev create secret generic runner-secret \
+  --namespace forgejo-runner \
+  --from-literal=token=<your-runner-token>
+```
+
+Flux will detect the secret and the runner pod will start.
+
+### Storage
+
+Forgejo data is stored at `/data/forgejo` on the kind worker node (hostPath). This survives
+pod restarts but not cluster deletion (`make teardown`).
+
 ## Troubleshooting
 
 | Symptom | Check |
