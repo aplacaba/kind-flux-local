@@ -1,0 +1,49 @@
+# ── PersistentVolume for Forgejo shared storage ──
+# On kind there's no storage provisioner, so we create PVs manually.
+# The Forgejo chart creates a PVC named "gitea-shared-storage" for
+# session/cache sharing across replicas. In single-replica mode it's
+# still required. We provide a matching PV + the PVC so it binds.
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: forgejo-shared-storage-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data/forgejo-shared
+    type: DirectoryOrCreate
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: gitea-shared-storage
+  namespace: forgejo
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ""
+---
+# ── PersistentVolume for Forgejo main data ──
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: forgejo-data-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data/forgejo
+    type: DirectoryOrCreate
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""

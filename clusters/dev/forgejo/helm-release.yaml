@@ -39,11 +39,14 @@ spec:
         nodePort: 30022
         port: 22
 
-    # ── Persistence (hostPath) ───────────────
+    # ── Persistence ──────────────────────────
+    # PV + PVC for shared storage are created manually in
+    # persistent-volume.yaml. The chart creates the data PVC
+    # which binds to forgejo-data-pv.
     persistence:
       enabled: true
-      create: false
-      hostPath: /data/forgejo
+      create: true
+      storageClass: ""
 
     # ── Disable ingress ──────────────────────
     ingress:

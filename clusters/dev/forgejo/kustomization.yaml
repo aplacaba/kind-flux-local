@@ -3,5 +3,6 @@ kind: Kustomization
 namespace: forgejo
 resources:
   - namespace.yaml
+  - persistent-volume.yaml
   - oci-repository.yaml
   - helm-release.yaml
