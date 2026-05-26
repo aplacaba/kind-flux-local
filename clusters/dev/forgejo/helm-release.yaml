@@ -55,7 +55,6 @@ spec:
     # ── Use non-rootless image (rootless + hostPath = permission hell on kind) ──
     image:
       rootless: false
-      tag: "16.0.0"
 
     # ── Pod security context ──────────────────
     # Using non-rootless image (runs as root), only need fsGroup for volume mounts
