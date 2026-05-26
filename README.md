@@ -106,10 +106,16 @@ Forgejo Actions) and a persistent Actions runner.
 
 ### Access
 
-After bootstrapping, Forgejo is available at:
+Forgejo is exposed via Traefik ingress. Add this to your `/etc/hosts`:
 
 ```
-http://127.0.0.1:30090
+127.0.0.1  forgejo.local
+```
+
+Then browse to:
+
+```
+http://forgejo.local
 ```
 
 Credentials: `forgejo-admin` / `admin123`

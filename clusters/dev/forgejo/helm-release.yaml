@@ -23,23 +23,31 @@ spec:
       config:
         APP_NAME: 'Forgejo CI/CD'
         server:
-          ROOT_URL: http://127.0.0.1:30090
-          DOMAIN: 127.0.0.1
+          ROOT_URL: http://forgejo.local
+          DOMAIN: forgejo.local
           HTTP_PORT: 3000
           SSH_PORT: 22
-          SSH_DOMAIN: 127.0.0.1
+          SSH_DOMAIN: forgejo.local
           PROTOCOL: http
 
-    # ── Service (NodePort for kind) ──────────
+    # ── Service (ClusterIP — Traefik handles ingress) ──
     service:
       http:
-        type: NodePort
-        nodePort: 30090
+        type: ClusterIP
         port: 3000
       ssh:
-        type: NodePort
-        nodePort: 30022
+        type: ClusterIP
         port: 22
+
+    # ── Ingress via Traefik ──────────────────
+    ingress:
+      enabled: true
+      className: traefik
+      hosts:
+        - host: forgejo.local
+          paths:
+            - path: /
+              pathType: Prefix
 
     # ── Persistence ──────────────────────────
     # PV + PVC for shared storage are created manually in
