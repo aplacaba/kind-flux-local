@@ -7,3 +7,4 @@ resources:
   - forgejo/
   - forgejo-runner/
   - podinfo/
+  - paperless/

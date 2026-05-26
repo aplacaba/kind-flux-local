@@ -1,0 +1,14 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: paperless
+  namespace: paperless
+spec:
+  entryPoints:
+    - web
+  routes:
+    - kind: Rule
+      match: Host(`paperless.localhost`)
+      services:
+        - name: paperless
+          port: 80

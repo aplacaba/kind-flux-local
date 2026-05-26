@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: paperless-config
+  namespace: paperless
+data:
+  PAPERLESS_SECRET_KEY: "super-secret-key-change-me-in-production"
+  PAPERLESS_URL: "http://paperless.localhost"
+  PAPERLESS_TIME_ZONE: "UTC"
+  PAPERLESS_OCR_LANGUAGE: "eng"
+  PAPERLESS_DBENGINE: "sqlite3"
+  PAPERLESS_REDIS: "redis://redis:6379"
+  PAPERLESS_CONSUMER_POLLING: "10"
+  PAPERLESS_CONSUMER_DELETE_DUPLICATES: "true"
+  PAPERLESS_FILENAME_FORMAT: "{created_year}/{correspondent}/{title}"
