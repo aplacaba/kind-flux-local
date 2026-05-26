@@ -17,9 +17,11 @@ spec:
         username: forgejo_admin
         password: admin123
         email: admin@forgejo.local
+        passwordMode: keepUpdated
 
     # ── Server config ────────────────────────
       config:
+        APP_NAME: 'Forgejo CI/CD'
         server:
           ROOT_URL: http://127.0.0.1:30090
           DOMAIN: 127.0.0.1
@@ -57,15 +59,11 @@ spec:
       runAsUser: 1000
       runAsGroup: 1000
 
-    # ── Disable ingress ──────────────────────
-    ingress:
-      enabled: false
-      tls: []
-
     # ── Resource limits for local dev ────────
     resources:
       limits:
-        memory: 512Mi
+        memory: 2Gi
+        cpu: 250m
       requests:
-        cpu: 100m
+        cpu: 250m
         memory: 256Mi
