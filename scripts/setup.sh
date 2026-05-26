@@ -4,14 +4,18 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 
+# Respect CLUSTERS env var (e.g. CLUSTERS=dev), default to both
+CLUSTERS_LIST="${CLUSTERS:-dev prod}"
+
 echo "========================================="
 echo "  Flux GitOps — Cluster Setup"
+echo "  Clusters: ${CLUSTERS_LIST}"
 echo "========================================="
 
 # ──────────────────────────────────────────────
 # 1. Create kind clusters
 # ──────────────────────────────────────────────
-for cluster in dev prod; do
+for cluster in ${CLUSTERS_LIST}; do
   config="$ROOT_DIR/kind/kind-config-${cluster}.yaml"
   if ! kind get clusters 2>/dev/null | grep -q "^${cluster}$"; then
     echo "→ Creating kind cluster: ${cluster}"
@@ -24,7 +28,7 @@ done
 
 echo ""
 echo "→ Waiting for clusters to be ready..."
-for cluster in dev prod; do
+for cluster in ${CLUSTERS_LIST}; do
   kubectl cluster-info --context "kind-${cluster}" 2>/dev/null | head -1
 done
 
@@ -33,7 +37,7 @@ done
 # ──────────────────────────────────────────────
 echo ""
 echo "→ Installing Flux Operator on each cluster..."
-for cluster in dev prod; do
+for cluster in ${CLUSTERS_LIST}; do
   ctx="kind-${cluster}"
   echo "--- [${cluster}] ---"
   helm upgrade --install flux-operator oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator \
@@ -47,7 +51,7 @@ done
 
 echo ""
 echo "→ Flux Operator status per cluster..."
-for cluster in dev prod; do
+for cluster in ${CLUSTERS_LIST}; do
   ctx="kind-${cluster}"
   echo "--- [${cluster}] ---"
   kubectl get pods --context "$ctx" \
@@ -57,7 +61,7 @@ done
 
 echo ""
 echo "→ Waiting for FluxInstance CRD to be established..."
-for cluster in dev prod; do
+for cluster in ${CLUSTERS_LIST}; do
   ctx="kind-${cluster}"
   echo "--- [${cluster}] ---"
   for i in $(seq 1 30); do
@@ -74,7 +78,7 @@ done
 # ──────────────────────────────────────────────
 echo ""
 echo "→ Bootstrapping Flux on each cluster (FluxInstance)..."
-for cluster in dev prod; do
+for cluster in ${CLUSTERS_LIST}; do
   ctx="kind-${cluster}"
   echo "--- [${cluster}] ---"
   kubectl apply --context "$ctx" -f "$ROOT_DIR/clusters/${cluster}/flux-instance.yaml"
@@ -83,7 +87,7 @@ done
 
 echo ""
 echo "→ Waiting for Flux components + CRDs to be ready..."
-for cluster in dev prod; do
+for cluster in ${CLUSTERS_LIST}; do
   ctx="kind-${cluster}"
   echo "--- [${cluster}] ---"
   # Wait for flux-system namespace
@@ -113,7 +117,7 @@ done
 # ──────────────────────────────────────────────
 echo ""
 echo "→ Applying remaining cluster resources (Traefik, Forgejo, etc)..."
-for cluster in dev prod; do
+for cluster in ${CLUSTERS_LIST}; do
   ctx="kind-${cluster}"
   echo "--- [${cluster}] ---"
   kubectl apply --context "$ctx" -k "$ROOT_DIR/clusters/${cluster}/"

@@ -6,3 +6,4 @@ resources:
   - persistent-volume.yaml
   - oci-repository.yaml
   - helm-release.yaml
+  - ingressroute.yaml

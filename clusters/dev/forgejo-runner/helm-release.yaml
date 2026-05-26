@@ -10,17 +10,24 @@ spec:
     namespace: forgejo-runner
   interval: 10m
   timeout: 5m
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: StatefulSet
+            patch: |-
+              - op: add
+                path: /spec/template/spec/restartPolicy
+                value: Always
   values:
     # ── Forgejo instance the runner connects to ──
     forgejo:
       server: http://forgejo.forgejo:3000
 
-    # ── Runner token (placeholder) ──────────────
-    # Replace with a real token after Forgejo is up:
-    #   kubectl create secret generic runner-secret \
-    #     --namespace forgejo-runner \
-    #     --from-literal=token=<your-token>
-    runnerSecret: runner-secret
+    # ── Runner token ───────────────────────────
+    runnerSecret:
+      create: true
+      token: "V-md4gdpXmhe1aNk1UcPPjlYLN4gwahUcyOSpazq8jy"
 
     # ── Single persistent runner ────────────────
     replicas: 1
