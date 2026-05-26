@@ -37,3 +37,4 @@ git-init:
 	else \
 		echo "→ Git repo already exists"; \
 	fi
+w

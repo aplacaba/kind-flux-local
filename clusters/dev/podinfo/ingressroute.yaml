@@ -1,0 +1,14 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: podinfo
+  namespace: podinfo
+spec:
+  entryPoints:
+    - web
+  routes:
+    - kind: Rule
+      match: Host(`podinfo.localhost`)
+      services:
+        - name: podinfo
+          port: 80
