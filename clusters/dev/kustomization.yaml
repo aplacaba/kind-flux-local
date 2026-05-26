@@ -8,3 +8,4 @@ resources:
   - forgejo-runner/
   - podinfo/
   - paperless/
+  - nginx/
