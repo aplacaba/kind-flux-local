@@ -52,12 +52,15 @@ spec:
       claimName: gitea-shared-storage
       size: 1Gi
 
+    # ── Use non-rootless image (rootless + hostPath = permission hell on kind) ──
+    image:
+      rootless: false
+      tag: "16.0.0"
+
     # ── Pod security context ──────────────────
-    # Rootless image needs fsGroup so hostPath volumes are writable
+    # Using non-rootless image (runs as root), only need fsGroup for volume mounts
     podSecurityContext:
       fsGroup: 1000
-      runAsUser: 1000
-      runAsGroup: 1000
 
     # ── Resource limits for local dev ────────
     resources:
